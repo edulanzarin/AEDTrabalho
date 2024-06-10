@@ -1,7 +1,7 @@
 package project.utils;
 
-import project.model.Arquivo;
 import project.functions.SelecionarHTML;
+import project.model.ArquivoHTML;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -9,17 +9,18 @@ import java.awt.event.ActionListener;
 
 public class AbrirArquivoHTMLButton implements ActionListener {
     private JFrame parentFrame;
-    private static JTextPane textPane;
-    private static SelecionarHTML selecionarArquivo = new SelecionarHTML();
+    private JTextPane textPane;
+    private SelecionarHTML selecionarArquivo;
 
-    public AbrirArquivoHTMLButton(JFrame parentFrame, JTextPane textPane) {
+    public AbrirArquivoHTMLButton(JFrame parentFrame, JTextPane textPane, SelecionarHTML selecionarArquivo) {
         this.parentFrame = parentFrame;
         this.textPane = textPane;
+        this.selecionarArquivo = selecionarArquivo;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Arquivo arquivoSelecionado = selecionarArquivo.selecionarArquivo(parentFrame);
+        ArquivoHTML arquivoSelecionado = selecionarArquivo.selecionarArquivo(parentFrame);
         if (arquivoSelecionado != null) {
             textPane.setText(arquivoSelecionado.getNomeArquivo());
         } else {

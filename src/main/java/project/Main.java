@@ -1,13 +1,16 @@
 package project;
 
-import javax.swing.*;
-
 import project.utils.GUIUtils;
+import project.utils.AbrirArquivoHTMLButton;
+import project.utils.AnalisarArquivoHTMLButton;
+import project.functions.SelecionarHTML;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Main extends JFrame {
     private JFrame frame;
+    private SelecionarHTML selecionarArquivo = new SelecionarHTML();
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -35,37 +38,38 @@ public class Main extends JFrame {
         gbc.gridy = 0;
         gbc.weightx = 1.0;
 
-        JButton abrirArquivoButton = GUIUtils.createButton(100, 30, "Selecionar", new GUIUtils.AbrirArquivoHTMLButton(frame));
         JTextPane arquivoSelecionadoLabel = GUIUtils.createTextPane(200, 30);
         arquivoSelecionadoLabel.setText("Arquivo HTML");
-        JButton analisarArquivoButton = GUIUtils.createButton(100, 30, "Analisar", new GUIUtils.AnalisarArquivoHTMLButton());
+        JButton abrirArquivoButton = GUIUtils.createButton(100, 30, "Selecionar", new AbrirArquivoHTMLButton(frame, arquivoSelecionadoLabel, selecionarArquivo));
+
+        JTable table = GUIUtils.createTable(780, 200);
+        JButton analisarArquivoButton = GUIUtils.createButton(100, 30, "Analisar", new AnalisarArquivoHTMLButton(table, selecionarArquivo));
 
         // Label centralizado
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.NONE;
-        gbc.insets = new Insets(0, 150, 0, 0); 
+        gbc.insets = new Insets(0, 150, 0, 0);
         consultPanel.add(arquivoSelecionadoLabel, gbc);
 
         // Botão de abrir arquivo a esquerda
         gbc.gridx++;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.fill = GridBagConstraints.NONE;
-        gbc.insets = new Insets(0, 0, 0, 0); 
+        gbc.insets = new Insets(0, 0, 0, 0);
         consultPanel.add(abrirArquivoButton, gbc);
 
         // Botão de analisar a direita
         gbc.gridx++;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.fill = GridBagConstraints.NONE;
-        gbc.insets = new Insets(0, 0, 0, 150); 
+        gbc.insets = new Insets(0, 0, 0, 150);
         consultPanel.add(analisarArquivoButton, gbc);
 
         JPanel textAreaPanel = GUIUtils.createPanel(780, 200);
         JTextArea descricaoTextArea = GUIUtils.createTextArea(780, 200);
         textAreaPanel.add(descricaoTextArea);
 
-         JPanel tablePanel = GUIUtils.createPanel(780, 200);
-        JTable table = GUIUtils.createTable(780, 200);
+        JPanel tablePanel = GUIUtils.createPanel(780, 200);
         tablePanel.add(new JScrollPane(table));
 
         JLabel borderLabel = new JLabel();

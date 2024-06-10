@@ -1,8 +1,5 @@
 package project.utils;
 
-import project.functions.SelecionarHTML;
-import project.model.Arquivo;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.SimpleAttributeSet;
@@ -11,13 +8,11 @@ import javax.swing.text.StyledDocument;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 /**
  * Classe utilitária para criação de componentes GUI e tratamento de eventos
  */
 public class GUIUtils {
-    private static SelecionarHTML selecionarArquivo = new SelecionarHTML();
     private static JPanel panel;
     private static JButton button;
     private static JTextPane textPane;
@@ -105,39 +100,5 @@ public class GUIUtils {
         table = new JTable(modelo);
         table.setPreferredScrollableViewportSize(new Dimension(width, height));
         return table;
-    }
-
-    
-
-    /**
-     * Listener para o botão de analisar arquivo HTML.
-     */
-    public static class AnalisarArquivoHTMLButton implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            Arquivo arquivo = selecionarArquivo.getArquivo();
-            if (arquivo != null) {
-                DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-                modelo.addRow(new Object[]{"html", 1});
-                modelo.addRow(new Object[]{"head", 1});
-                modelo.addRow(new Object[]{"title", 1});
-                modelo.addRow(new Object[]{"body", 1});
-                modelo.addRow(new Object[]{"div", 2});
-                modelo.addRow(new Object[]{"div", 2});
-                modelo.addRow(new Object[]{"div", 2});
-                modelo.addRow(new Object[]{"div", 2});
-                modelo.addRow(new Object[]{"div", 2});
-                modelo.addRow(new Object[]{"div", 2});
-                modelo.addRow(new Object[]{"div", 2});
-                modelo.addRow(new Object[]{"div", 2});
-                modelo.addRow(new Object[]{"div", 2});
-                modelo.addRow(new Object[]{"div", 2});
-                modelo.addRow(new Object[]{"div", 2});
-                modelo.addRow(new Object[]{"div", 2});
-                modelo.addRow(new Object[]{"div", 2});
-            } else {
-                // Nenhum arquivo selecionado
-            }
-        }
     }
 }
