@@ -95,7 +95,7 @@ public class GUIUtils {
      * @return JTable criada
      */
     public static JTable createTable(int width, int height) {
-        String[] colunas = {"Tag", "Ocorrências"};
+        String[] colunas = {"Tag", "Ocorrências", "Singleton", "Ocorrências"};
         DefaultTableModel modelo = new DefaultTableModel(colunas, 0);
         table = new JTable(modelo);
         table.setPreferredScrollableViewportSize(new Dimension(width, height));

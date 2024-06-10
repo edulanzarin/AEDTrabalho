@@ -22,7 +22,12 @@ public class AnalisarArquivoHTMLButton implements ActionListener {
         ArquivoHTML arquivo = selecionarArquivo.getArquivo();
         if (arquivo != null) {
             DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-            modelo.addRow(new Object[]{"html", 1});
+            modelo.addRow(new Object[]{"html", 1, "DDOCTYPE", 1});
+            modelo.addRow(new Object[]{"html", 1, "DDOCTYPE", 1});
+            modelo.addRow(new Object[]{"html", 1, "DDOCTYPE", 1});
+            modelo.addRow(new Object[]{"html", 1, "DDOCTYPE", 1});
+            modelo.addRow(new Object[]{"html", 1, "DDOCTYPE", 1});
+            modelo.addRow(new Object[]{"html", 1, "DDOCTYPE", 1});
             modelo.addRow(new Object[]{"head", 1});
             modelo.addRow(new Object[]{"title", 1});
             modelo.addRow(new Object[]{"body", 1});
