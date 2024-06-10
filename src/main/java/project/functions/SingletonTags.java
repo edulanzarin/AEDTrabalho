@@ -13,29 +13,16 @@ public class SingletonTags {
         this.singTagsEncontradas = new ListaEncadeada<>();
     }
 
-    public String[] getSingletonTags() {
-        return SINGLETON_TAGS;
-    }
-
-    public void compararSingletonTags(String tag) {
+    public boolean isSingletonTag(String tag) {
         for (String singletonTag : SINGLETON_TAGS) {
             if (tag.equals(singletonTag)) {
-                singTagsEncontradas.inserir(tag);
-                return;
+                return true;
             }
         }
+        return false;
     }
 
     public ListaEncadeada<String> getSingTagsEncontradas() {
         return singTagsEncontradas;
-    }
-
-    public void contarSingletonTags() {
-        for (String singletonTag : SINGLETON_TAGS) {
-            int contador = singTagsEncontradas.contarOcorrencias(singletonTag);
-            if (contador > 0) {
-                System.out.println(singletonTag + " = " + contador);
-            }
-        }
     }
 }
