@@ -18,6 +18,7 @@ public class AnalisarHTML {
     return contadorTags;
     }
 
+    // Retirar as tags do html usando o número de tags obtido em contarTags()
     // public String[] retirarTags() {
     //     for (int i = 0; i < contarTags(); i++) {
 
