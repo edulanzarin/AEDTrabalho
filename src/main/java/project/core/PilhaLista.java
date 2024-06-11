@@ -2,7 +2,7 @@ package project.core;
 
 import project.core.exceptions.*;
 
-public class PilhaLista<T> implements Pilha<T> {
+public class PilhaLista <T> implements Pilha<T> {
 	
 	private ListaEncadeada<T> lista = new ListaEncadeada<T>();
 
@@ -15,7 +15,7 @@ public class PilhaLista<T> implements Pilha<T> {
 	public T pop() {
 		T valor;
 		valor = peek();
-		lista.remover(valor);
+		lista.retirar(valor);
 		
 		return valor;
 	}
@@ -36,5 +36,20 @@ public class PilhaLista<T> implements Pilha<T> {
 	@Override
 	public void liberar() {
 		lista = new ListaEncadeada<>();
+
+		// OU
+
+//		while (!estaVazia()) {
+//			pop();
+//		}
+
 	}
+	
+	
+	@Override
+	public String toString() {
+		return lista.toString();
+	}
+	
+	
 }
