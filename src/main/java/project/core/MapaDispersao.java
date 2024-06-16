@@ -1,8 +1,5 @@
 package project.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Implementação de um mapa de dispersão (hash map) utilizando listas encadeadas para tratamento de colisões.
  *
@@ -11,16 +8,16 @@ import java.util.List;
  */
 public class MapaDispersao<K, V> {
     private final int TAMANHO_INICIAL = 10;
-    private List<List<Entrada<K, V>>> tabela;
+    private ListaEncadeada<ListaEncadeada<NoMapa<K, V>>> tabela;
     private int tamanho;
 
     /**
      * Construtor que inicializa o mapa de dispersão com um tamanho inicial pré-definido.
      */
     public MapaDispersao() {
-        tabela = new ArrayList<>(TAMANHO_INICIAL);
+        tabela = new ListaEncadeada<>();
         for (int i = 0; i < TAMANHO_INICIAL; i++) {
-            tabela.add(new ArrayList<>());
+            tabela.adicionar(new ListaEncadeada<>());
         }
         tamanho = 0;
     }
@@ -32,7 +29,7 @@ public class MapaDispersao<K, V> {
      * @return Índice calculado para a chave.
      */
     private int hash(K chave) {
-        return Math.abs(chave.hashCode()) % tabela.size();
+        return Math.abs(chave.hashCode()) % TAMANHO_INICIAL;
     }
 
     /**
@@ -44,16 +41,19 @@ public class MapaDispersao<K, V> {
      */
     public void inserir(K chave, V valor) {
         int indice = hash(chave);
-        List<Entrada<K, V>> lista = tabela.get(indice);
+        ListaEncadeada<NoMapa<K, V>> lista = tabela.getNo(indice).getInfo();
 
-        for (Entrada<K, V> entrada : lista) {
-            if (entrada.getChave().equals(chave)) {
-                entrada.setValor(valor);
+        NoLista<NoMapa<K, V>> noAtual = lista.getPrimeiro();
+        while (noAtual != null) {
+            NoMapa<K, V> noMapa = noAtual.getInfo();
+            if (noMapa.getChave().equals(chave)) {
+                noMapa.setInfo(valor);
                 return;
             }
+            noAtual = noAtual.getProximo();
         }
 
-        lista.add(new Entrada<>(chave, valor));
+        lista.adicionar(new NoMapa<>(chave, valor));
         tamanho++;
     }
 
@@ -65,12 +65,15 @@ public class MapaDispersao<K, V> {
      */
     public V buscar(K chave) {
         int indice = hash(chave);
-        List<Entrada<K, V>> lista = tabela.get(indice);
+        ListaEncadeada<NoMapa<K, V>> lista = tabela.getNo(indice).getInfo();
 
-        for (Entrada<K, V> entrada : lista) {
-            if (entrada.getChave().equals(chave)) {
-                return entrada.getValor();
+        NoLista<NoMapa<K, V>> noAtual = lista.getPrimeiro();
+        while (noAtual != null) {
+            NoMapa<K, V> noMapa = noAtual.getInfo();
+            if (noMapa.getChave().equals(chave)) {
+                return noMapa.getInfo();
             }
+            noAtual = noAtual.getProximo();
         }
 
         return null;
@@ -82,13 +85,22 @@ public class MapaDispersao<K, V> {
      * @return Array de objetos contendo todas as chaves presentes no mapa.
      */
     public Object[] buscarTodos() {
-        List<Object> elementos = new ArrayList<>();
-        for (List<Entrada<K, V>> lista : tabela) {
-            for (Entrada<K, V> entrada : lista) {
-                elementos.add(entrada.getChave());
+        ListaEncadeada<Object> elementos = new ListaEncadeada<>();
+        NoLista<ListaEncadeada<NoMapa<K, V>>> noTabela = tabela.getPrimeiro();
+
+        while (noTabela != null) {
+            ListaEncadeada<NoMapa<K, V>> lista = noTabela.getInfo();
+            NoLista<NoMapa<K, V>> noLista = lista.getPrimeiro();
+
+            while (noLista != null) {
+                elementos.adicionar(noLista.getInfo().getChave());
+                noLista = noLista.getProximo();
             }
+
+            noTabela = noTabela.getProximo();
         }
-        return elementos.toArray();
+
+        return elementos.buscarTodos();
     }
 
     /**
@@ -98,54 +110,5 @@ public class MapaDispersao<K, V> {
      */
     public int tamanho() {
         return tamanho;
-    }
-
-    /**
-     * Classe interna que representa uma entrada no mapa de dispersão.
-     *
-     * @param <K> Tipo da chave.
-     * @param <V> Tipo do valor associado à chave.
-     */
-    private static class Entrada<K, V> {
-        private K chave;
-        private V valor;
-
-        /**
-         * Construtor que inicializa uma entrada com uma chave e um valor.
-         *
-         * @param chave Chave da entrada.
-         * @param valor Valor associado à chave.
-         */
-        public Entrada(K chave, V valor) {
-            this.chave = chave;
-            this.valor = valor;
-        }
-
-        /**
-         * Obtém a chave da entrada.
-         *
-         * @return Chave da entrada.
-         */
-        public K getChave() {
-            return chave;
-        }
-
-        /**
-         * Obtém o valor associado à chave da entrada.
-         *
-         * @return Valor associado à chave.
-         */
-        public V getValor() {
-            return valor;
-        }
-
-        /**
-         * Define o valor associado à chave da entrada.
-         *
-         * @param valor Novo valor a ser associado à chave.
-         */
-        public void setValor(V valor) {
-            this.valor = valor;
-        }
     }
 }

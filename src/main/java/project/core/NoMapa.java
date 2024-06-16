@@ -11,6 +11,17 @@ public class NoMapa<K, V> {
     private V info;
 
     /**
+     * Construtor que inicializa o nó com uma chave e uma informação.
+     *
+     * @param chave Chave do nó.
+     * @param info Informação armazenada no nó.
+     */
+    public NoMapa(K chave, V info) {
+        this.chave = chave;
+        this.info = info;
+    }
+
+    /**
      * Obtém a chave do nó.
      *
      * @return Chave do nó.
