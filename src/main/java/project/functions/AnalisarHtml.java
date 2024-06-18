@@ -17,6 +17,7 @@ public class AnalisarHtml {
     private PilhaLista<String> tagsEncontradas;
     private TagOcorrencia ocorrenciasCorretas;
     private ListaEncadeada<TagIncorreta> tagsIncorretas;
+    private String[] singletonTags;
 
     /**
      * Construtor padrão da classe AnalisarHtml.
@@ -26,6 +27,32 @@ public class AnalisarHtml {
         tagsEncontradas = new PilhaLista<>();
         ocorrenciasCorretas = new TagOcorrencia();
         tagsIncorretas = new ListaEncadeada<>();
+        inicializarSingletonTags();
+    }
+
+    /**
+     * Inicializa o array de singleton tags.
+     */
+    private void inicializarSingletonTags() {
+        singletonTags = new String[]{
+            "meta", "base", "br", "col", "command", "embed", "hr", "img",
+            "input", "link", "param", "source", "!doctype"
+        };
+    }
+
+    /**
+     * Verifica se a tag é uma singleton tag.
+     * 
+     * @param tagName Nome da tag a ser verificada
+     * @return true se a tag for singleton, false caso contrário
+     */
+    private boolean isSingletonTag(String tagName) {
+        for (String tag : singletonTags) {
+            if (tag.equals(tagName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -41,9 +68,9 @@ public class AnalisarHtml {
         String htmlContent = conteudoHtml.getConteudo();
 
         // Expressão regular para encontrar tags HTML
-        String regexTag = "<\\s*(\\w+).*?>|<\\s*/\\s*(\\w+)\\s*>";
+        String regexTag = "<\\s*(\\w+)([^>]*)>|<\\s*/\\s*(\\w+)\\s*>";
 
-        Pattern patternTag = Pattern.compile(regexTag);
+        Pattern patternTag = Pattern.compile(regexTag, Pattern.DOTALL);
         Matcher matcher = patternTag.matcher(htmlContent);
 
         // Limpar as estruturas antes de iniciar uma nova análise
@@ -53,11 +80,13 @@ public class AnalisarHtml {
 
         while (matcher.find()) {
             String tagAbertura = matcher.group(1);
-            String tagFechamento = matcher.group(2);
+            String tagFechamento = matcher.group(3);
 
             if (tagAbertura != null) {
                 String tagName = tagAbertura.toLowerCase();
-                tagsEncontradas.push(tagName);
+                if (!isSingletonTag(tagName)) {
+                    tagsEncontradas.push(tagName);
+                }
             } else if (tagFechamento != null) {
                 String tagName = tagFechamento.toLowerCase();
 
