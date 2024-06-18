@@ -1,6 +1,6 @@
-package project;
+package project.view;
 
-import project.view.*;
+import project.utils.MainWindow;
 
 import javax.swing.*;
 

@@ -1,4 +1,4 @@
-package project.view;
+package project.utils;
 
 import project.model.*;
 import project.functions.*;
